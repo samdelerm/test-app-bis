@@ -37,4 +37,4 @@ def get_team_info():
         return jsonify({"error": "Erreur lors de la récupération des informations de l'équipe"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
