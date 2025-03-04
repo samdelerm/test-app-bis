@@ -15,14 +15,17 @@ def index():
 
 @app.route('/get_matches')
 def get_matches():
-    try:
-        response = requests.get("https://app-rsk.onrender.com/get_matches")
-        response.raise_for_status()
-        matches = response.json()
-        return jsonify(matches)
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Erreur lors de la récupération des matchs: {e}")
-        return jsonify({"error": "Erreur lors de la récupération des matchs"}), 500
+    retries = 3
+    for attempt in range(retries):
+        try:
+            response = requests.get("https://app-rsk.onrender.com/get_matches")
+            response.raise_for_status()
+            matches = response.json()
+            return jsonify(matches)
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Erreur lors de la récupération des matchs (tentative {attempt + 1}/{retries}): {e}")
+            if attempt == retries - 1:
+                return jsonify({"error": "Erreur lors de la récupération des matchs après plusieurs tentatives"}), 500
 
 @app.route('/get_team_info')
 def get_team_info():
