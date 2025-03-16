@@ -7,35 +7,56 @@
     <style>
         :root {
             --main-color: #ff0000;
+            --background-color: #0f0f0f;
+            --secondary-color: #1f1f1f;
+            --text-color: #ffffff;
+            --error-color: red;
         }
         body {
             font-family: 'Orbitron', sans-serif;
-            background-color: #0f0f0f;
-            color: var(--main-color);
-            margin: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             animation: fadeIn 2s ease-in-out;
             overflow: hidden;
             position: relative;
+            min-height: 100vh;
         }
-        select, button {
+        header, footer {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            text-align: center;
+            border-bottom: 1px solid var(--main-color);
+        }
+        footer {
+            border-top: 1px solid var(--main-color);
+            border-bottom: none;
+            margin-top: auto;
+        }
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+        select, button, input[type="color"] {
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
-            background-color: #1f1f1f;
-            color: var(--main-color);
+            background-color: var(--secondary-color);
+            color: var(--text-color);
             border: 1px solid var(--main-color);
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
         }
-        select:hover, button:hover {
+        select:hover, button:hover, input[type="color"]:hover {
             background-color: var(--main-color);
-            color: #1f1f1f;
+            color: var(--secondary-color);
         }
         pre {
-            background-color: #1f1f1f;
+            background-color: var(--secondary-color);
             padding: 10px;
             border: 1px solid var(--main-color);
             border-radius: 5px;
@@ -45,7 +66,7 @@
             word-wrap: break-word;
         }
         .error {
-            color: red;
+            color: var(--error-color);
         }
         h1 {
             font-size: 2em;
@@ -137,26 +158,33 @@
     </script>
 </head>
 <body>
-    <h1>Infos des Matchs</h1>
-    <div>
-        <select id="matchSpinner" onchange="showMatchInfo()">
-            <option value="">Sélectionner un match</option>
-        </select>
-    </div>
-    <div>
-        <pre id="infoLabel">Infos des Matchs</pre>
-    </div>
-    <div class="error" id="errorLabel"></div>
-    <div>
-        <button onclick="goBack()">Retour</button>
-    </div>
-    <div>
-        <label for="colorPicker">Choisissez une couleur:</label>
-        <input type="color" id="colorPicker" name="colorPicker" value="#ff0000" onchange="changeColor(this.value)">
-    </div>
-    <div>
-        <button onclick="toggleRainbowText()">Activer/Désactiver Texte Arc-en-ciel</button>
-    </div>
+    <header>
+        <h1>Infos des Matchs</h1>
+    </header>
+    <main>
+        <div>
+            <select id="matchSpinner" onchange="showMatchInfo()">
+                <option value="">Sélectionner un match</option>
+            </select>
+        </div>
+        <div>
+            <pre id="infoLabel">Infos des Matchs</pre>
+        </div>
+        <div class="error" id="errorLabel"></div>
+        <div>
+            <button onclick="goBack()">Retour</button>
+        </div>
+        <div>
+            <label for="colorPicker">Choisissez une couleur:</label>
+            <input type="color" id="colorPicker" name="colorPicker" value="#ff0000" onchange="changeColor(this.value)">
+        </div>
+        <div>
+            <button onclick="toggleRainbowText()">Activer/Désactiver Texte Arc-en-ciel</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; Rhoban. Tous droits réservés.</p>
+    </footer>
     <div class="stars"></div>
     <div class="stars"></div>
     <div class="stars"></div>
