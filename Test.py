@@ -45,4 +45,5 @@ def stop_reload():
     return jsonify({"message": "Reload stopped"}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port="1000", debug=True)
+    from werkzeug.serving import run_simple
+    run_simple("0.0.0.0", 1000, app)
