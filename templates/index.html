@@ -117,6 +117,13 @@
                 const matches = await response.json();
                 const matchSpinner = document.getElementById('matchSpinner');
                 matchSpinner.innerHTML = matches.map(match => `<option value="${match.id}">${match.blue_team} vs ${match.green_team}</option>`).join('');
+                
+                // Restore selected match from localStorage
+                const selectedMatchId = localStorage.getItem('selectedMatchId');
+                if (selectedMatchId) {
+                    matchSpinner.value = selectedMatchId;
+                    showMatchInfo();  // Automatically show match info if a match was previously selected
+                }
             } catch (error) {
                 console.error('Erreur lors de la récupération des matchs:', error);
                 document.getElementById('errorLabel').innerText = 'Erreur lors de la récupération des matchs';
@@ -126,6 +133,11 @@
         async function showMatchInfo() {
             const matchSpinner = document.getElementById('matchSpinner');
             const matchId = matchSpinner.value;
+            console.log(`Selected match_id: ${matchId}`);  // Add this line to log the match_id
+            
+            // Save selected match to localStorage
+            localStorage.setItem('selectedMatchId', matchId);
+            
             try {
                 const response = await fetch(`/get_team_info?match_id=${matchId}`);
                 if (!response.ok) {
@@ -140,9 +152,12 @@
         }
 
         function goBack() {
-            document.getElementById('infoLabel').innerText = 'Infos des Matchs';
+            document.getElementById('infoLabel').innerText = 'Infos des Matchs RSK';
             document.getElementById('matchSpinner').value = '';
             document.getElementById('errorLabel').innerText = '';
+            
+            // Clear selected match from localStorage
+            localStorage.removeItem('selectedMatchId');
         }
 
         function changeColor(color) {
@@ -154,7 +169,11 @@
             body.classList.toggle('rainbow-text');
         }
 
-        window.onload = fetchMatches;
+        window.onload = () => {
+            fetchMatches();
+        
+            setInterval(fetchMatches, 500); // Reload every 0.5 seconds
+        };
     </script>
 </head>
 <body>
@@ -168,7 +187,7 @@
             </select>
         </div>
         <div>
-            <pre id="infoLabel">Infos des Matchs</pre>
+            <pre id="infoLabel">Infos des Matchs RSK</pre>
         </div>
         <div class="error" id="errorLabel"></div>
         <div>

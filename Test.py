@@ -30,6 +30,7 @@ def get_matches():
 @app.route('/get_team_info')
 def get_team_info():
     match_id = request.args.get('match_id')
+    logging.info(f"Received match_id: {match_id}")  # Add this line to log the match_id
     try:
         response = requests.get(f"https://app-rsk.onrender.com/get_team_info?match_id={match_id}")
         response.raise_for_status()
