@@ -40,5 +40,9 @@ def get_team_info():
         logging.error(f"Erreur lors de la récupération des informations de l'équipe: {e}")
         return jsonify({"error": "Erreur lors de la récupération des informations de l'équipe"}), 500
 
+@app.route('/stop_reload')
+def stop_reload():
+    return jsonify({"message": "Reload stopped"}), 200
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

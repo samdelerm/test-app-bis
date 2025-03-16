@@ -108,6 +108,8 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <script>
+        let reloadInterval;
+
         async function fetchMatches() {
             try {
                 const response = await fetch('/get_matches');
@@ -138,6 +140,9 @@
             // Save selected match to localStorage
             localStorage.setItem('selectedMatchId', matchId);
             
+            // Stop the reload interval
+            clearInterval(reloadInterval);
+
             try {
                 const response = await fetch(`/get_team_info?match_id=${matchId}`);
                 if (!response.ok) {
@@ -158,6 +163,9 @@
             
             // Clear selected match from localStorage
             localStorage.removeItem('selectedMatchId');
+
+            // Restart the reload interval
+            reloadInterval = setInterval(fetchMatches, 500);
         }
 
         function changeColor(color) {
@@ -172,7 +180,7 @@
         window.onload = () => {
             fetchMatches();
         
-            setInterval(fetchMatches, 500); // Reload every 0.5 seconds
+            reloadInterval = setInterval(fetchMatches, 500); // Reload every 0.5 seconds
         };
     </script>
 </head>
