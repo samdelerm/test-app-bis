@@ -23,9 +23,9 @@ def get_matches():
             matches = response.json()
             return jsonify(matches)
         except requests.exceptions.RequestException as e:
-            logging.error(f"Erreur lors de la récupération des matchs (tentative {attempt + 1}/{retries}): {e}")
+            logging.error(f"Erreur lors de la recuperation des matchs (tentative {attempt + 1}/{retries}): {e}")
             if attempt == retries - 1:
-                return jsonify({"error": "Erreur lors de la récupération des matchs après plusieurs tentatives"}), 500
+                return jsonify({"error": "Erreur lors de la recuperation des matchs apres plusieurs tentatives"}), 500
 
 @app.route('/get_team_info')
 def get_team_info():
@@ -37,8 +37,8 @@ def get_team_info():
         team_info = response.json()
         return jsonify(team_info)
     except requests.exceptions.RequestException as e:
-        logging.error(f"Erreur lors de la récupération des informations de l'équipe: {e}")
-        return jsonify({"error": "Erreur lors de la récupération des informations de l'équipe"}), 500
+        logging.error(f"Erreur lors de la recuperation des informations de l'equipe: {e}")
+        return jsonify({"error": "Erreur lors de la recuperation des informations de l'equipe"}), 500
 
 @app.route('/stop_reload')
 def stop_reload():
