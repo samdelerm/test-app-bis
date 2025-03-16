@@ -146,16 +146,19 @@
             try {
                 const response = await fetch(`/get_team_info?match_id=${matchId}`);
                 if (!response.ok) {
-                    throw new Error('La réponse du réseau n\'était pas correcte');
+                    const errorText = await response.text();
+                    console.error(`Erreur lors de la récupération des informations de l'équipe: ${response.status} - ${errorText}`);
+                    throw new Error(`La réponse du réseau n'était pas correcte: ${response.status} - ${errorText}`);
                 }
                 const teamInfo = await response.json();
                 document.getElementById('infoLabel').innerText = `Nom de l'équipe bleue: ${teamInfo.blue.name}\nScore de l'équipe bleue: ${teamInfo.blue.score}\nNom de l'équipe verte: ${teamInfo.green.name}\nScore de l'équipe verte: ${teamInfo.green.score}\nMinuteur: ${teamInfo.timer}`;
             } catch (error) {
                 console.error('Erreur lors de la récupération des informations de l\'équipe:', error);
-                document.getElementById('errorLabel').innerText = 'Erreur lors de la récupération des informations de l\'équipe';
+                document.getElementById('errorLabel').innerText = `Erreur lors de la récupération des informations de l'équipe: ${error.message}`;
             }
 
             // Restart the reload interval
+            clearInterval(reloadInterval);  // Clear any existing interval before setting a new one
             reloadInterval = setInterval(() => fetchMatchInfo(matchId), 500);
         }
 
@@ -163,13 +166,15 @@
             try {
                 const response = await fetch(`/get_team_info?match_id=${matchId}`);
                 if (!response.ok) {
-                    throw new Error('La réponse du réseau n\'était pas correcte');
+                    const errorText = await response.text();
+                    console.error(`Erreur lors de la récupération des informations de l'équipe: ${response.status} - ${errorText}`);
+                    throw new Error(`La réponse du réseau n'était pas correcte: ${response.status} - ${errorText}`);
                 }
                 const teamInfo = await response.json();
                 document.getElementById('infoLabel').innerText = `Nom de l'équipe bleue: ${teamInfo.blue.name}\nScore de l'équipe bleue: ${teamInfo.blue.score}\nNom de l'équipe verte: ${teamInfo.green.name}\nScore de l'équipe verte: ${teamInfo.green.score}\nMinuteur: ${teamInfo.timer}`;
             } catch (error) {
                 console.error('Erreur lors de la récupération des informations de l\'équipe:', error);
-                document.getElementById('errorLabel').innerText = 'Erreur lors de la récupération des informations de l\'équipe';
+                document.getElementById('errorLabel').innerText = `Erreur lors de la récupération des informations de l'équipe: ${error.message}`;
             }
         }
 
@@ -205,6 +210,7 @@
 
         document.getElementById('matchSpinner').addEventListener('blur', () => {
             const matchId = document.getElementById('matchSpinner').value;
+            clearInterval(reloadInterval);  // Clear any existing interval before setting a new one
             if (matchId) {
                 reloadInterval = setInterval(() => fetchMatchInfo(matchId), 500);
             } else {
